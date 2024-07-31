@@ -1,0 +1,27 @@
+PODS:
+  - shared (1.0)
+  - Usercentrics (2.15.4)
+  - UsercentricsUI (2.15.4):
+    - Usercentrics (= 2.15.4)
+
+DEPENDENCIES:
+  - shared (from `../shared`)
+  - UsercentricsUI
+
+SPEC REPOS:
+  trunk:
+    - Usercentrics
+    - UsercentricsUI
+
+EXTERNAL SOURCES:
+  shared:
+    :path: "../shared"
+
+SPEC CHECKSUMS:
+  shared: c133c49697085ba65e4031b78e671fc97617a40d
+  Usercentrics: a3d44838b9bd32a264ea40322bf489a78a17a63d
+  UsercentricsUI: 5cb8d8b70012192ec63e71243b0064a272bc2f57
+
+PODFILE CHECKSUM: 7cc2f1c7398f54040098dc0ba5a646d02cd2b22a
+
+COCOAPODS: 1.15.2
