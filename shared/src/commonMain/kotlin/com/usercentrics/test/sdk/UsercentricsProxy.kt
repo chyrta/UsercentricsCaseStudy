@@ -1,13 +1,13 @@
 package com.usercentrics.test.sdk
 
-import com.usercentrics.test.features.costCalculator.UsercentricsConsentManagementData
-import com.usercentrics.test.features.costCalculator.UsercentricsUserConsent
+import com.usercentrics.test.sdk.model.UsercentricsConsentManagementData
+import com.usercentrics.test.sdk.model.UsercentricsUserConsent
 
 interface UsercentricsProxy {
 
     fun initialize(settingsId: String)
 
-    fun isReady(onSuccess: (List<UsercentricsUserConsent>) -> Unit, onFailure: (Throwable) -> Unit)
+    suspend fun isReady(): List<UsercentricsUserConsent>
 
     fun getConsentManagementData(): List<UsercentricsConsentManagementData>
 

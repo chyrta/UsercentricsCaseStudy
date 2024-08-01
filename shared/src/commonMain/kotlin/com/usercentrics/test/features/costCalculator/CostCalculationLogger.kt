@@ -1,5 +1,7 @@
 package com.usercentrics.test.features.costCalculator
 
+import com.usercentrics.test.features.costCalculator.domain.model.dataType.DataTypeCost
+
 object CostCalculationLogger {
     fun logCalculationDetails(services: List<ServiceCalculationDetail>, totalCost: Int) {
         println("Total Cost: $totalCost")

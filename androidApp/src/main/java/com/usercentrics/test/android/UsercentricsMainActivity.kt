@@ -3,13 +3,12 @@ package com.usercentrics.test.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import com.usercentrics.test.features.costCalculator.CostCalculatorViewModel
+import com.usercentrics.test.android.ui.screen.ConsentScreen
+import com.usercentrics.test.android.ui.theme.UsercentricsTheme
+import com.usercentrics.test.features.costCalculator.presentation.CostCalculatorViewModel
 import org.koin.android.ext.android.inject
 
-class MainActivity : ComponentActivity() {
+class UsercentricsMainActivity : ComponentActivity() {
 
     private val costCalculatorViewModel: CostCalculatorViewModel by inject()
 

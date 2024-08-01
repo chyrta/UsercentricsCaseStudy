@@ -2,52 +2,36 @@ package com.usercentrics.test.sdk
 
 import android.content.Context
 import com.usercentrics.sdk.Usercentrics
-import com.usercentrics.sdk.UsercentricsBanner
-import com.usercentrics.sdk.UsercentricsConsentUserResponse
 import com.usercentrics.sdk.UsercentricsOptions
-import com.usercentrics.sdk.UsercentricsReadyStatus
-import com.usercentrics.sdk.errors.UsercentricsError
-import com.usercentrics.test.features.costCalculator.DataTypeCost
-import com.usercentrics.test.features.costCalculator.UsercentricsConsentManagementData
-import com.usercentrics.test.features.costCalculator.UsercentricsUserConsent
-import kotlinx.coroutines.flow.Flow
+import com.usercentrics.test.features.costCalculator.domain.model.dataType.DataTypeCost
+import com.usercentrics.test.sdk.model.UsercentricsConsentManagementData
+import com.usercentrics.test.sdk.model.UsercentricsUserConsent
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 class UsercentricsAndroidNative(
     private val context: Context,
     private val usercentrics: Usercentrics
 ) : UsercentricsProxy {
 
-    override fun initialize(settingsId: String) {
+    override fun initialize(settingsId: String) =
         usercentrics.initialize(context, UsercentricsOptions(settingsId = settingsId))
-    }
 
-    override fun isReady(
-        onSuccess: (List<UsercentricsUserConsent>) -> Unit,
-        onFailure: (Throwable) -> Unit
-    ) {
-        usercentrics.isReady({ status ->
-            val consents = status.consents.map {
-                UsercentricsUserConsent(status = it.status, templateId = it.templateId)
-            }
-            onSuccess(consents)
-        }, { error ->
-            onFailure(error)
-        })
+    override suspend fun isReady(): List<UsercentricsUserConsent> {
+        return suspendCancellableCoroutine { continuation ->
+            usercentrics.isReady({ status ->
+                val consents = status.consents.map {
+                    UsercentricsUserConsent(status = it.status, templateId = it.templateId)
+                }
+                continuation.resume(consents)
+            }, { error -> continuation.resumeWithException(error) })
+        }
     }
-
-//    override fun requestUserConsentBanner(onConsent: (List<UsercentricsUserConsent>) -> Unit) {
-//        val userCentricsBanner = UsercentricsBanner(context)
-//        userCentricsBanner.showSecondLayer { response ->
-//            val consents = response?.consents?.map {
-//                UsercentricsUserConsent(status = it.status, templateId = it.templateId)
-//            } ?: emptyList()
-//            onConsent(consents)
-//        }
-//    }
 
     override fun getConsentManagementData(): List<UsercentricsConsentManagementData> {
-        val computedData = usercentrics.instance.getCMPData()
-        return computedData
+        return usercentrics.instance
+            .getCMPData()
             .services
             .filterNot { it.templateId.isNullOrEmpty() }
             .map {

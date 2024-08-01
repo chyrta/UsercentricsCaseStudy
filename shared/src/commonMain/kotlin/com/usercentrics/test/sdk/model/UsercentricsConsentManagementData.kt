@@ -1,9 +1,6 @@
-package com.usercentrics.test.features.costCalculator
+package com.usercentrics.test.sdk.model
 
-data class UsercentricsUserConsent(
-    val status: Boolean,
-    val templateId: String
-)
+import com.usercentrics.test.features.costCalculator.domain.model.dataType.DataTypeCost
 
 data class UsercentricsConsentManagementData(
     val templateId: String,

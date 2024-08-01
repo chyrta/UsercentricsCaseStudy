@@ -29,13 +29,26 @@ class UsercentricsDarwinNative: UsercentricsProxy {
         
     }
     
-    func isReady(onSuccess: @escaping ([UsercentricsUserConsent]) -> Void, onFailure: @escaping (shared.KotlinThrowable) -> Void) {
+    func isReadyAsync() async throws -> [UsercentricsUserConsent] {
+        return try await withCheckedContinuation { continuation in
+            UsercentricsCore.isReady { readyStatus in
+                let consents = readyStatus.consents
+                    .map { UsercentricsUserConsent(status: $0.status, templateId: $0.templateId) }
+                continuation.resume(returning: consents)
+            } onFailure: { error in
+                continuation.resume(throwing: error as! Never)
+            }
+        }
+    }
+
+    
+    func isReady(completionHandler: @escaping ([UsercentricsUserConsent]?, Error?) -> Void) {
         UsercentricsCore.isReady { readyStatus in
             let consents = readyStatus.consents
                 .map { UsercentricsUserConsent(status: $0.status, templateId: $0.templateId) }
-            onSuccess(consents)
+            completionHandler(consents, nil)
         } onFailure: { error in
-            onFailure(KotlinException(message: "Hello world"))
+            completionHandler(nil, error)
         }
     }
     

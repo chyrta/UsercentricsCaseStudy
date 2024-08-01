@@ -1,12 +1,12 @@
 package com.usercentrics.test.di
 
-import com.usercentrics.test.features.costCalculator.CalculateVirtualCostUsecase
-import com.usercentrics.test.features.costCalculator.CostCalculatorProcessor
-import com.usercentrics.test.features.costCalculator.CostCalculatorViewModel
-import com.usercentrics.test.features.costCalculator.rule.BankingSnoopyRule
-import com.usercentrics.test.features.costCalculator.rule.CostRule
-import com.usercentrics.test.features.costCalculator.rule.GoodCitizenRule
-import com.usercentrics.test.features.costCalculator.rule.WhyDoYouCareRule
+import com.usercentrics.test.features.costCalculator.domain.usecase.calculateVirtualCost.CalculateVirtualCostUsecase
+import com.usercentrics.test.features.costCalculator.domain.usecase.calculateVirtualCost.CostCalculatorProcessor
+import com.usercentrics.test.features.costCalculator.domain.model.rule.BankingSnoopyRule
+import com.usercentrics.test.features.costCalculator.domain.model.rule.CostRule
+import com.usercentrics.test.features.costCalculator.domain.model.rule.GoodCitizenRule
+import com.usercentrics.test.features.costCalculator.domain.model.rule.WhyDoYouCareRule
+import com.usercentrics.test.features.costCalculator.domain.usecase.prepareUsercentrics.PrepareUsercentricsUsecase
 import com.usercentrics.test.sdk.UsercentricsProxy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -40,7 +40,9 @@ val appModule = module {
         )
     }
     single<CostCalculatorProcessor> { CostCalculatorProcessor(get()) }
+
     single<CalculateVirtualCostUsecase> { CalculateVirtualCostUsecase(get(), get()) }
+    single<PrepareUsercentricsUsecase> { PrepareUsercentricsUsecase(get()) }
 }
 
 val dispatcherModule = module {

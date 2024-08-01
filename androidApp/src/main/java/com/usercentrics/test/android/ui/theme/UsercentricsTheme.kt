@@ -1,4 +1,4 @@
-package com.usercentrics.test.android
+package com.usercentrics.test.android.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape

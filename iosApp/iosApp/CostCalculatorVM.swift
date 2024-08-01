@@ -19,12 +19,6 @@ class CostCalculatorVM: CostCalculatorViewModel, ObservableObject {
         collect(flow: uiState, collect: { state in
             self.state = state as! CostCalculatorContractState
         })
-        
-//        collect(flow: effect, collect: { uiEffect in
-//            let effect = (uiEffect as! CostCalculatorContractEffect)
-//            
-//           
-//        })
     }
     
 }

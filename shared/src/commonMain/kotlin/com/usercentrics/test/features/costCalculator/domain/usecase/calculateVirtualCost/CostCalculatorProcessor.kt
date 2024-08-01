@@ -1,17 +1,21 @@
-package com.usercentrics.test.features.costCalculator
+package com.usercentrics.test.features.costCalculator.domain.usecase.calculateVirtualCost
 
-import com.usercentrics.test.features.costCalculator.rule.CostRule
+import com.usercentrics.test.features.costCalculator.CostCalculationLogger
+import com.usercentrics.test.features.costCalculator.domain.model.dataType.DataTypeCost
+import com.usercentrics.test.sdk.model.UsercentricsConsentManagementData
+import com.usercentrics.test.features.costCalculator.domain.model.costAdjusment.CostAdjustmentType
+import com.usercentrics.test.features.costCalculator.domain.model.rule.CostRule
 import kotlin.math.roundToInt
 
 class CostCalculatorProcessor(
     private val rules: Set<CostRule>
 ) {
 
-    fun calculate(services: List<UsercentricsConsentManagementData>): Double {
+    fun calculateTotalCost(services: List<UsercentricsConsentManagementData>): Double {
         val serviceDetails = services.map { service ->
             val dataTypes = service.dataTypes
             val baseCost = dataTypes.sumOf { it.cost }.toDouble()
-            val (finalCost, appliedRules) = applyRulesIndependently(baseCost, dataTypes.toSet())
+            val (finalCost, appliedRules) = applyRules(baseCost, dataTypes.toSet())
 
             CostCalculationLogger.ServiceCalculationDetail(
                 name = service.processingCompanyName,
@@ -27,7 +31,10 @@ class CostCalculatorProcessor(
         return totalCost.toDouble()
     }
 
-    private fun applyRulesIndependently(baseCost: Double, dataTypes: Set<DataTypeCost>): Pair<Double, List<CostCalculationLogger.AppliedRule>> {
+    private fun applyRules(
+        baseCost: Double,
+        dataTypes: Set<DataTypeCost>
+    ): Pair<Double, List<CostCalculationLogger.AppliedRule>> {
         var totalCost = baseCost
         val appliedRules = mutableListOf<CostCalculationLogger.AppliedRule>()
 

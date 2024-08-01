@@ -1,4 +1,4 @@
-package com.usercentrics.test.features.costCalculator
+package com.usercentrics.test.features.costCalculator.domain.model.dataType
 
 sealed class DataTypeCost(val code: String, val cost: Int) {
     data object ConfigurationAppSettings : DataTypeCost("Configuration of app settings", 1)
@@ -16,6 +16,7 @@ sealed class DataTypeCost(val code: String, val cost: Int) {
     data object PurchaseActivity : DataTypeCost("Purchase activity", 6)
     data object InternetServiceProvider : DataTypeCost("Internet service provider", 4)
     data object JavaScriptSupport : DataTypeCost("JavaScript support", -1)
+    data object SearchTerms: DataTypeCost("Search terms", 0)
 
     companion object {
         fun fromCode(code: String): DataTypeCost? {
@@ -35,6 +36,7 @@ sealed class DataTypeCost(val code: String, val cost: Int) {
                 "Purchase activity" -> PurchaseActivity
                 "Internet service provider" -> InternetServiceProvider
                 "JavaScript support" -> JavaScriptSupport
+                "Search terms" -> SearchTerms
                 else -> null
             }
         }

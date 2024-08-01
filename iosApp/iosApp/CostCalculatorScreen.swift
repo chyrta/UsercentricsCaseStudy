@@ -10,6 +10,7 @@ import SwiftUI
 import UsercentricsUI
 import shared
 
+
 struct CostCalculatorScreen: View {
     @ObservedObject var viewModel: CostCalculatorVM = CostCalculatorVM()
     
@@ -18,9 +19,10 @@ struct CostCalculatorScreen: View {
             Spacer()
             ConsentScore(score: viewModel.state.totalCostDisplayable)
             Spacer()
-            ConsentButton {
-                viewModel.setEvent(event: CostCalculatorContractEventOnConsentButtonClick.shared)
-            }
+            ConsentButton(
+                            onClick: { viewModel.setEvent(event: CostCalculatorContractEventOnConsentButtonClick.shared) },
+                            disabled: !viewModel.state.isReady
+                        )
             .padding(.horizontal, 16)
             .padding(.bottom, 16)
         }.onAppear {
@@ -29,11 +31,11 @@ struct CostCalculatorScreen: View {
                 let effect = (uiEffect as! CostCalculatorContractEffect)
 
                 switch effect {
-                case is CostCalculatorContractEffectTriggerConsentDialog:
+                case is CostCalculatorContractEffectShowUsercentricsConsentBanner:
                     let banner = UsercentricsBanner()
                     banner.showSecondLayer() { userResponse in
                         let consents = userResponse.consents.map { UsercentricsUserConsent(status: $0.status, templateId: $0.templateId) } ?? []
-                        viewModel.setEvent(event: CostCalculatorContractEventOnConsentProvidedClick(consents: consents))
+                        viewModel.setEvent(event: CostCalculatorContractEventOnConsentProvidedClick(providedConsents: consents))
                     }
                 default:
                     break
@@ -59,6 +61,7 @@ struct ConsentScore: View {
 
 struct ConsentButton: View {
     let onClick: () -> Void
+    let disabled: Bool
     
     var body: some View {
         Button(action: onClick) {
@@ -66,11 +69,22 @@ struct ConsentButton: View {
                 .font(.title3)
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color("PrimaryColor"))
+                .background(disabled ? Color.gray : Color("PrimaryColor"))
                 .foregroundColor(Color.white)
                 .cornerRadius(10)
         }
+        .disabled(disabled)
         .frame(height: 50)
+    }
+}
+
+struct ConsentButton_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            ConsentButton(onClick: {}, disabled: true)
+            ConsentButton(onClick: {}, disabled: false)
+        }
+        .previewLayout(.sizeThatFits)
     }
 }
 

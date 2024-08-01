@@ -1,7 +1,7 @@
-package com.usercentrics.test.features.costCalculator.rule
+package com.usercentrics.test.features.costCalculator.domain.model.rule
 
-import com.usercentrics.test.features.costCalculator.DataTypeCost
-import com.usercentrics.test.features.costCalculator.CostAdjustment
+import com.usercentrics.test.features.costCalculator.domain.model.dataType.DataTypeCost
+import com.usercentrics.test.features.costCalculator.domain.model.costAdjusment.CostAdjustment
 
 abstract class RequiredDataTypeRule(
     private val requiredDataTypeRule: Set<DataTypeCost>,

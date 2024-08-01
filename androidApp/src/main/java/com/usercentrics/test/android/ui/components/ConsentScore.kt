@@ -1,4 +1,4 @@
-package com.usercentrics.test.android
+package com.usercentrics.test.android.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

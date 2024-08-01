@@ -3,8 +3,6 @@ package com.usercentrics.test.android
 import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
-import com.usercentrics.test.android.di.viewModelModule
-import com.usercentrics.test.di.appModule
 import com.usercentrics.test.di.initKoin
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -18,7 +16,6 @@ class UsercentricsApplication : Application() {
         initKoin {
             androidLogger(if (isDebug()) Level.ERROR else Level.NONE)
             androidContext(this@UsercentricsApplication)
-            modules(viewModelModule)
         }
     }
 
