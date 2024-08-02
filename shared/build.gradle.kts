@@ -1,8 +1,20 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import java.util.*
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinCocoapods)
     alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.buildKonfig)
 }
+
+val localPropertiesFile = project.rootProject.file("local.properties")
+val localProperties = Properties()
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
+val usercentricsSettingsId = localProperties.getProperty("usercentrics.settingsId") ?: ""
 
 kotlin {
     androidTarget {
@@ -43,12 +55,18 @@ kotlin {
             api(libs.koin.core)
             implementation(libs.kotlinx.coroutines.core)
         }
-        iosMain.dependencies {
-
-        }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+    }
+}
+
+buildkonfig {
+    packageName = "com.usercentrics.test"
+    exposeObjectWithName = "UsercentricsConfig"
+
+    defaultConfigs {
+        buildConfigField(STRING, "settingsId", usercentricsSettingsId)
     }
 }
 

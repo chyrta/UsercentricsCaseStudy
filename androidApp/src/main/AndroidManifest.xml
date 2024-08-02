@@ -4,6 +4,7 @@
     <application
         android:name=".UsercentricsApplication"
         android:allowBackup="false"
+        android:label="Usercentrics Sample"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity

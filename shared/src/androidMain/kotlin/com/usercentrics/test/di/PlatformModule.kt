@@ -13,9 +13,9 @@ actual fun platformModule(): Module = module {
     single { MainDispatcher() }
 
     single<UsercentricsProxy> {
-        val userCentrics = UsercentricsAndroidNative(androidApplication(), Usercentrics)
-        userCentrics.initialize("gChmbFIdL")
-        userCentrics
+        UsercentricsAndroidNative(androidApplication(), Usercentrics).apply {
+            initialize()
+        }
     }
 
     single { CostCalculatorViewModel() }

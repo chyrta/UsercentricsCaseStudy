@@ -15,8 +15,7 @@ struct iOSApp: App {
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let userCentricsDarwinNative = UsercentricsDarwinNative()
-        userCentricsDarwinNative.initialize(settingsId: "gChmbFIdL")
-        
+        userCentricsDarwinNative.initialize()
         KoinKt.doInitKoinDarwin(usercentricsProxy: userCentricsDarwinNative)
         return true
     }

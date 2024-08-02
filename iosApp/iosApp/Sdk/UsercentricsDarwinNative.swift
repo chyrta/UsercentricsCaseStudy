@@ -11,28 +11,25 @@ import shared
 import Usercentrics
 
 class UsercentricsDarwinNative: UsercentricsProxy {
-
     
-    func getConsentManagementData() -> [UsercentricsConsentManagementData] {
-        let consentManagementData = UsercentricsCore.shared.getCMPData()
-        
-        return consentManagementData
+    func getDataProcessingServices() -> [UsercentricsDataProcessingService] {
+        return UsercentricsCore.shared.getCMPData()
             .services
-    
-//            .filter { $0.templateId?.isEmpty! }
-            .map { UsercentricsConsentManagementData(
-                templateId: $0.templateId!,
-                processingCompanyName: $0.nameOfProcessingCompany,
-                dataTypes: $0.dataCollectedList.compactMap { DataTypeCost.companion.fromCode(code: $0) }
-            )
+            .filter { $0.templateId != nil && $0.dataProcessor != nil }
+            .map {
+                UsercentricsDataProcessingService(
+                    templateId: $0.templateId!,
+                    processorName: $0.dataProcessor!,
+                    processedDataTypes: Set($0.dataCollectedList.compactMap { DataTypeCost.companion.fromCode(code: $0) })
+                )
             }
-        
     }
     
     func isReadyAsync() async throws -> [UsercentricsUserConsent] {
-        return try await withCheckedContinuation { continuation in
+        return await withCheckedContinuation { continuation in
             UsercentricsCore.isReady { readyStatus in
-                let consents = readyStatus.consents
+                let consents = readyStatus
+                    .consents
                     .map { UsercentricsUserConsent(status: $0.status, templateId: $0.templateId) }
                 continuation.resume(returning: consents)
             } onFailure: { error in
@@ -40,21 +37,20 @@ class UsercentricsDarwinNative: UsercentricsProxy {
             }
         }
     }
-
     
     func isReady(completionHandler: @escaping ([UsercentricsUserConsent]?, Error?) -> Void) {
         UsercentricsCore.isReady { readyStatus in
-            let consents = readyStatus.consents
+            let consents = readyStatus
+                .consents
                 .map { UsercentricsUserConsent(status: $0.status, templateId: $0.templateId) }
             completionHandler(consents, nil)
         } onFailure: { error in
             completionHandler(nil, error)
         }
     }
-    
-    
-    func initialize(settingsId: String) {
-        let options = UsercentricsOptions(settingsId: settingsId)
+
+    func initialize() {
+        let options = UsercentricsOptions(settingsId: UsercentricsConfig().settingsId)
         UsercentricsCore.configure(options: options)
     }
     

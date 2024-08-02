@@ -14,6 +14,9 @@
 		A14AD08B2C5AD5BF0060BCC5 /* UsercentricsDarwinNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14AD08A2C5AD5BF0060BCC5 /* UsercentricsDarwinNative.swift */; };
 		A17C6A122C5ADB7600B1518C /* CostCalculatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C6A112C5ADB7600B1518C /* CostCalculatorScreen.swift */; };
 		A17C6A142C5ADB8B00B1518C /* CostCalculatorVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C6A132C5ADB8B00B1518C /* CostCalculatorVM.swift */; };
+		A17C6A192C5CC6F800B1518C /* ConsentScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C6A182C5CC6F800B1518C /* ConsentScore.swift */; };
+		A17C6A1B2C5CC71500B1518C /* ConsentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C6A1A2C5CC71500B1518C /* ConsentButton.swift */; };
+		A17C6A1D2C5CC74D00B1518C /* ConsentErrorAlertState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C6A1C2C5CC74D00B1518C /* ConsentErrorAlertState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,6 +42,9 @@
 		A14AD08A2C5AD5BF0060BCC5 /* UsercentricsDarwinNative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsercentricsDarwinNative.swift; sourceTree = "<group>"; };
 		A17C6A112C5ADB7600B1518C /* CostCalculatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostCalculatorScreen.swift; sourceTree = "<group>"; };
 		A17C6A132C5ADB8B00B1518C /* CostCalculatorVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostCalculatorVM.swift; sourceTree = "<group>"; };
+		A17C6A182C5CC6F800B1518C /* ConsentScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentScore.swift; sourceTree = "<group>"; };
+		A17C6A1A2C5CC71500B1518C /* ConsentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentButton.swift; sourceTree = "<group>"; };
+		A17C6A1C2C5CC74D00B1518C /* ConsentErrorAlertState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentErrorAlertState.swift; sourceTree = "<group>"; };
 		AEAAFEADEFE847EC814C6F3D /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F487CA15182FFA1782F27E0A /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -93,13 +99,12 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				A17C6A162C5B8C0F00B1518C /* Features */,
+				A17C6A152C5B8BF400B1518C /* Sdk */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
-				A14AD08A2C5AD5BF0060BCC5 /* UsercentricsDarwinNative.swift */,
-				A17C6A112C5ADB7600B1518C /* CostCalculatorScreen.swift */,
-				A17C6A132C5ADB8B00B1518C /* CostCalculatorVM.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -110,6 +115,34 @@
 				AEAAFEADEFE847EC814C6F3D /* Pods_iosApp.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A17C6A152C5B8BF400B1518C /* Sdk */ = {
+			isa = PBXGroup;
+			children = (
+				A14AD08A2C5AD5BF0060BCC5 /* UsercentricsDarwinNative.swift */,
+			);
+			path = Sdk;
+			sourceTree = "<group>";
+		};
+		A17C6A162C5B8C0F00B1518C /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				A17C6A172C5B8C2000B1518C /* CostCalculator */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		A17C6A172C5B8C2000B1518C /* CostCalculator */ = {
+			isa = PBXGroup;
+			children = (
+				A17C6A132C5ADB8B00B1518C /* CostCalculatorVM.swift */,
+				A17C6A112C5ADB7600B1518C /* CostCalculatorScreen.swift */,
+				A17C6A182C5CC6F800B1518C /* ConsentScore.swift */,
+				A17C6A1A2C5CC71500B1518C /* ConsentButton.swift */,
+				A17C6A1C2C5CC74D00B1518C /* ConsentErrorAlertState.swift */,
+			);
+			path = CostCalculator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,9 +296,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A17C6A1B2C5CC71500B1518C /* ConsentButton.swift in Sources */,
+				A17C6A192C5CC6F800B1518C /* ConsentScore.swift in Sources */,
 				A17C6A122C5ADB7600B1518C /* CostCalculatorScreen.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				A17C6A142C5ADB8B00B1518C /* CostCalculatorVM.swift in Sources */,
+				A17C6A1D2C5CC74D00B1518C /* ConsentErrorAlertState.swift in Sources */,
 				A14AD08B2C5AD5BF0060BCC5 /* UsercentricsDarwinNative.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

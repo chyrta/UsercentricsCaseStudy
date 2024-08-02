@@ -4,7 +4,7 @@ import com.usercentrics.test.features.costCalculator.domain.model.dataType.DataT
 import com.usercentrics.test.features.costCalculator.domain.model.costAdjusment.CostAdjustment
 import com.usercentrics.test.features.costCalculator.domain.model.costAdjusment.CostAdjustmentType
 
-class WhyDoYouCareRule : RequiredDataTypeRule(
+class WhyDoYouCareRule(override val name: String = "Why do you care?") : RequiredDataTypeRule(
     requiredDataTypeRule = setOf(
         DataTypeCost.SearchTerms,
         DataTypeCost.Geolocation,

@@ -8,10 +8,13 @@ import com.usercentrics.test.sdk.model.UsercentricsUserConsent
 interface CostCalculatorContract {
 
     sealed interface Event: UiEvent {
-        data object CalculateInitialCost: Event
-        data object OnConsentButtonClick: Event
-        data class OnConsentProvidedClick(val providedConsents: List<UsercentricsUserConsent>):
-            Event
+        data object RetrieveCurrentVirtualCost: Event
+        data object OnConsentErrorDismissClick: Event
+        data object OnConsentErrorRetryClick: Event
+        data object OnShowConsentBannerButtonClick: Event
+        data class OnConsentProvidedClick(
+            val providedConsents: List<UsercentricsUserConsent>
+        ): Event
     }
 
     data class State(
@@ -22,7 +25,9 @@ interface CostCalculatorContract {
     }
 
     sealed interface Effect: UiEffect {
-        data object ShowUsercentricsConsentBanner: Effect
+        data object ShowConsentBanner: Effect
+        data class ShowConsentError(val message: String): Effect
+        data object HideConsentError: Effect
     }
 
 }

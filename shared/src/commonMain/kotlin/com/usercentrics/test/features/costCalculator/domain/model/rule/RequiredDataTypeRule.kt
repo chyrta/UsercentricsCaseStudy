@@ -8,7 +8,7 @@ abstract class RequiredDataTypeRule(
     private val costAdjustment: CostAdjustment
 ) : CostRule {
 
-    override fun costAdjustment(dataTypes: Set<DataTypeCost>): CostAdjustment? {
+    override fun adjustCost(dataTypes: Set<DataTypeCost>): CostAdjustment? {
         return if (dataTypes.containsAll(requiredDataTypeRule)) costAdjustment else null
     }
 }

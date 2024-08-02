@@ -2,8 +2,8 @@ package com.usercentrics.test.sdk.model
 
 import com.usercentrics.test.features.costCalculator.domain.model.dataType.DataTypeCost
 
-data class UsercentricsConsentManagementData(
+data class UsercentricsDataProcessingService(
     val templateId: String,
-    val processingCompanyName: String,
-    val dataTypes: List<DataTypeCost>
+    val processorName: String,
+    val processedDataTypes: Set<DataTypeCost>
 )

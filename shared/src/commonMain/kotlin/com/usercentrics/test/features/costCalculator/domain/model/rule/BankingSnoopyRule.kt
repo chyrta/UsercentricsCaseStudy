@@ -4,7 +4,7 @@ import com.usercentrics.test.features.costCalculator.domain.model.dataType.DataT
 import com.usercentrics.test.features.costCalculator.domain.model.costAdjusment.CostAdjustment
 import com.usercentrics.test.features.costCalculator.domain.model.costAdjusment.CostAdjustmentType
 
-class BankingSnoopyRule : RequiredDataTypeRule(
+class BankingSnoopyRule(override val name: String = "Banking Snoopy") : RequiredDataTypeRule(
     requiredDataTypeRule = setOf(
         DataTypeCost.PurchaseActivity,
         DataTypeCost.BankDetails,

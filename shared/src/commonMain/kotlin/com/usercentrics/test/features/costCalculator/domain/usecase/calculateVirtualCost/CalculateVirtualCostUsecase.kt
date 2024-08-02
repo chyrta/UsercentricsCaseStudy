@@ -10,18 +10,19 @@ class CalculateVirtualCostUsecase(
 ) {
 
     operator fun invoke(consentedService: List<UsercentricsUserConsent>): Int {
-        // Getting list of available consent management data services
-        val consentManagementDataServices = usercentricsSdk.getConsentManagementData()
+        // Getting list of available data processing services with companies and their data types
+        val dataProcessingServices = usercentricsSdk.getDataProcessingServices()
 
         // Filtering the result by leaving only those
         // where consent was given (status = true) and its template id matches
-        val filteredServices = consentManagementDataServices.filter { service ->
+        val filteredServices = dataProcessingServices.filter { service ->
             consentedService.any { it.templateId == service.templateId && it.status }
         }
 
         // Calculating and logging total cost of the services
-        val totalCost = costCalculatorProcessor.calculateTotalCost(filteredServices)
-        return totalCost.roundToInt()
+        val costCalculationResult = costCalculatorProcessor.calculateTotalCost(filteredServices)
+        CostCalculatorLogger.logCalculationDetails(costCalculationResult)
+        return costCalculationResult.totalCost
     }
 
 }
