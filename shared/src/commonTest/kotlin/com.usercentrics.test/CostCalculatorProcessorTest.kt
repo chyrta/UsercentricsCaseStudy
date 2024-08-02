@@ -34,7 +34,7 @@ class CostCalculatorProcessorTest {
     }
 
     @Test
-    fun `when no rules are applied, the base cost is returned`() {
+    fun `when no rules are applied the base cost is returned`() {
         val dataTypes = setOf(
             DataTypeCost.AdvertisingIdentifier,
             DataTypeCost.UserAgent,
@@ -51,7 +51,7 @@ class CostCalculatorProcessorTest {
     }
 
     @Test
-    fun `when there are purchase activity, bank details number and card number details, both good citizen and banking snoopy are applied`() {
+    fun `when there are purchase activity bank details number and card number details both good citizen and banking snoopy are applied`() {
         val dataTypes = setOf(
             DataTypeCost.PurchaseActivity,
             DataTypeCost.BankDetails,
@@ -60,21 +60,20 @@ class CostCalculatorProcessorTest {
 
         val services = listOf(mockService(dataTypes))
 
-
-        val expectedCost = dataTypes.applyExpectedAdjustments(
+        val expectedCost = applyExpectedAdjustments(
             baseCost = dataTypes.sumOf { it.cost },
             expectedAdjustments = listOf(
                 bankingSnoopyRule.costAdjustment,
                 theGoodCitizenRule.costAdjustment
             )
-        ).roundToInt()
+        )
 
         val result = costCalculatorProcessor.calculateTotalCost(services)
         assertEquals(expectedCost, result.totalCost)
     }
 
     @Test
-    fun `when two rules are applied, all cost adjustments are applied correctly`() {
+    fun `when two rules are applied all cost adjustments are applied correctly`() {
         val dataTypes = setOf(
             DataTypeCost.PurchaseActivity,
             DataTypeCost.BankDetails,
@@ -86,13 +85,13 @@ class CostCalculatorProcessorTest {
 
         val services = listOf(mockService(dataTypes))
 
-        val expectedCost = dataTypes.applyExpectedAdjustments(
+        val expectedCost = applyExpectedAdjustments(
             baseCost = dataTypes.sumOf { it.cost },
             expectedAdjustments = listOf(
                 bankingSnoopyRule.costAdjustment,
                 whyDoYouCareRule.costAdjustment
             )
-        ).roundToInt()
+        )
 
         val result = costCalculatorProcessor.calculateTotalCost(services)
         assertEquals(expectedCost, result.totalCost)

@@ -4,12 +4,13 @@ import com.usercentrics.test.features.costCalculator.domain.model.costAdjusment.
 import com.usercentrics.test.features.costCalculator.domain.model.costAdjusment.CostAdjustmentType
 import com.usercentrics.test.features.costCalculator.domain.model.dataType.DataTypeCost
 import com.usercentrics.test.sdk.model.UsercentricsDataProcessingService
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
-fun Set<DataTypeCost>.applyExpectedAdjustments(
+fun applyExpectedAdjustments(
     baseCost: Int,
     expectedAdjustments: List<CostAdjustment>
-): Double {
+): Int {
     var totalCost = baseCost.toDouble()
     expectedAdjustments.forEach { adjustment ->
         totalCost = when (adjustment.type) {
@@ -17,7 +18,7 @@ fun Set<DataTypeCost>.applyExpectedAdjustments(
             CostAdjustmentType.Decrease -> totalCost - (baseCost * adjustment.percentage)
         }
     }
-    return totalCost
+    return totalCost.roundToInt()
 }
 
 fun mockService(dataTypes: Set<DataTypeCost>) =
