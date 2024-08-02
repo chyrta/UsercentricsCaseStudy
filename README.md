@@ -1,3 +1,5 @@
+# Usercentrics Case Study App
+
 ## Overview
 An application for both Android & iOS, written with Kotlin Multiplatform, utilizing the Usercentrics SDK to calculate the virtual cost of given consent to the app.
 
@@ -38,6 +40,9 @@ The project is utilizing feature-based approach and contains several modules:
 
 ## What things can improved?
 - Probably, getting rid of `UsercentricsProxy` component by introducing native iOS Usercentrics SDK
-  in `shared` module. I noticed, that Usercentrics SDK for iOS is also written in Kotlin Multiplatform :)
+  in `shared` module. I noticed that Usercentrics SDK for iOS is also written in Kotlin Multiplatform :)
 - Better project structure, better namings, better placing of extension functions and mappers
 - Unit tests not only for cost calculation processor, but also for the rest of business logic
+
+## For other candidates:
+- Hello there! 👋
