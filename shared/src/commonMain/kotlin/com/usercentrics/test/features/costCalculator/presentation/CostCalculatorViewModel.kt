@@ -28,16 +28,14 @@ open class CostCalculatorViewModel : BaseViewModel<Event, State, Effect>() {
         State(totalCost = 0, isReady = false)
 
     override fun handleEvent(event: Event) = when (event) {
-        is Event.RetrieveCurrentVirtualCost -> calculateVirtualCost()
-        is Event.OnShowConsentBannerButtonClick -> showConsentBanner()
+        is Event.RetrieveCurrentVirtualCost -> calculateCurrentVirtualCost()
         is Event.OnConsentErrorRetryClick -> retryInitialization()
         is Event.OnConsentProvidedClick -> calculateVirtualCost(event.providedConsents)
-        is Event.OnConsentErrorDismissClick -> {
-            setEffect { Effect.HideConsentError }
-        }
+        is Event.OnShowConsentBannerButtonClick -> setEffect { Effect.ShowConsentBanner }
+        is Event.OnConsentErrorDismissClick -> setEffect { Effect.HideConsentError }
     }
 
-    private fun calculateVirtualCost() {
+    private fun calculateCurrentVirtualCost() {
         calculateVirtualCostJob?.cancel()
         calculateVirtualCostJob = launch {
             retrieveCurrentConsentStatusUsecase().fold(
@@ -56,10 +54,8 @@ open class CostCalculatorViewModel : BaseViewModel<Event, State, Effect>() {
 
     private fun retryInitialization() {
         reinitializeUsercentricsUsecase()
-        calculateVirtualCost()
+        calculateCurrentVirtualCost()
     }
-
-    private fun showConsentBanner() = setEffect { Effect.ShowConsentBanner }
 
     private fun calculateVirtualCost(consents: List<UsercentricsUserConsent>) {
         val result = calculateVirtualCostUseCase(consents)

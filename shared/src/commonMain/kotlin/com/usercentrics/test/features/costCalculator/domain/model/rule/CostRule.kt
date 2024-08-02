@@ -6,6 +6,8 @@ import com.usercentrics.test.features.costCalculator.domain.model.costAdjusment.
 interface CostRule {
 
     val name: String
-    fun adjustCost(dataTypes: Set<DataTypeCost>): CostAdjustment?
 
+    val costAdjustment: CostAdjustment
+
+    fun adjustCost(dataTypes: Set<DataTypeCost>): CostAdjustment?
 }

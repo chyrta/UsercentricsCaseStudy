@@ -2,40 +2,101 @@ package com.usercentrics.test
 
 import com.usercentrics.test.features.costCalculator.domain.model.dataType.DataTypeCost
 import com.usercentrics.test.features.costCalculator.domain.model.rule.BankingSnoopyRule
-import com.usercentrics.test.features.costCalculator.domain.model.rule.GoodCitizenRule
+import com.usercentrics.test.features.costCalculator.domain.model.rule.TheGoodCitizenRule
 import com.usercentrics.test.features.costCalculator.domain.model.rule.WhyDoYouCareRule
 import com.usercentrics.test.features.costCalculator.domain.usecase.calculateVirtualCost.CostCalculatorProcessor
-import com.usercentrics.test.sdk.model.UsercentricsConsentManagementData
+import kotlin.math.roundToInt
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-
 class CostCalculatorProcessorTest {
 
-    @Test
-    fun `test calculate with multiple rules`() {
+    private lateinit var costCalculatorProcessor: CostCalculatorProcessor
+
+    private lateinit var bankingSnoopyRule: BankingSnoopyRule
+    private lateinit var whyDoYouCareRule: WhyDoYouCareRule
+    private lateinit var theGoodCitizenRule: TheGoodCitizenRule
+
+    @BeforeTest
+    fun setUp() {
+        bankingSnoopyRule = BankingSnoopyRule()
+        whyDoYouCareRule = WhyDoYouCareRule()
+        theGoodCitizenRule = TheGoodCitizenRule()
+
         val rules = setOf(
-            BankingSnoopyRule(),
-            WhyDoYouCareRule(),
-            GoodCitizenRule()
+            bankingSnoopyRule,
+            whyDoYouCareRule,
+            theGoodCitizenRule
         )
 
-        val calculatorProcessor = CostCalculatorProcessor(rules)
+        costCalculatorProcessor = CostCalculatorProcessor(rules)
+    }
 
-        val dataTypes = listOf(
+    @Test
+    fun `when no rules are applied, the base cost is returned`() {
+        val dataTypes = setOf(
+            DataTypeCost.AdvertisingIdentifier,
+            DataTypeCost.UserAgent,
+            DataTypeCost.BrowserInformation,
+            DataTypeCost.AppCrashes,
+            DataTypeCost.DateTimeVisit
+        )
+
+        val services = listOf(mockService(dataTypes))
+
+        val expectedCost = dataTypes.sumOf { it.cost }
+        val result = costCalculatorProcessor.calculateTotalCost(services)
+        assertEquals(expectedCost, result.totalCost)
+    }
+
+    @Test
+    fun `when there are purchase activity, bank details number and card number details, both good citizen and banking snoopy are applied`() {
+        val dataTypes = setOf(
+            DataTypeCost.PurchaseActivity,
+            DataTypeCost.BankDetails,
+            DataTypeCost.CardNumber
+        )
+
+        val services = listOf(mockService(dataTypes))
+
+
+        val expectedCost = dataTypes.applyExpectedAdjustments(
+            baseCost = dataTypes.sumOf { it.cost },
+            expectedAdjustments = listOf(
+                bankingSnoopyRule.costAdjustment,
+                theGoodCitizenRule.costAdjustment
+            )
+        ).roundToInt()
+
+        val result = costCalculatorProcessor.calculateTotalCost(services)
+        assertEquals(expectedCost, result.totalCost)
+    }
+
+    @Test
+    fun `when two rules are applied, all cost adjustments are applied correctly`() {
+        val dataTypes = setOf(
+            DataTypeCost.PurchaseActivity,
+            DataTypeCost.BankDetails,
+            DataTypeCost.CardNumber,
             DataTypeCost.IpAddress,
             DataTypeCost.Geolocation,
             DataTypeCost.SearchTerms
         )
 
-        val services = listOf(
-            UsercentricsConsentManagementData("1", "My company", dataTypes)
-        )
+        val services = listOf(mockService(dataTypes))
 
-        val result = calculatorProcessor.calculateTotalCost(services)
-        assertEquals(result, 15.0)
+        val expectedCost = dataTypes.applyExpectedAdjustments(
+            baseCost = dataTypes.sumOf { it.cost },
+            expectedAdjustments = listOf(
+                bankingSnoopyRule.costAdjustment,
+                whyDoYouCareRule.costAdjustment
+            )
+        ).roundToInt()
+
+        val result = costCalculatorProcessor.calculateTotalCost(services)
+        assertEquals(expectedCost, result.totalCost)
     }
-
 
 
 }

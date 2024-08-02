@@ -5,7 +5,7 @@ import com.usercentrics.test.features.costCalculator.domain.model.costAdjusment.
 
 abstract class RequiredDataTypeRule(
     private val requiredDataTypeRule: Set<DataTypeCost>,
-    private val costAdjustment: CostAdjustment
+    override val costAdjustment: CostAdjustment
 ) : CostRule {
 
     override fun adjustCost(dataTypes: Set<DataTypeCost>): CostAdjustment? {
